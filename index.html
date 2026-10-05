@@ -19,9 +19,9 @@
 <header class="topbar"><div class="brand"><div class="mark">P</div><div>The Pamart Closet<small>Inventory Management System</small></div></div><div class="userpill"><div><b style="font-size:12px">Admin</b><small style="display:block;color:var(--muted);font-size:10px">All Shops</small></div><div class="avatar">A</div></div></header>
 <div class="layout">
 <aside class="sidebar"><nav class="nav">
-<div class="navtitle">Main</div><button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button><button data-page="inventory">▤ &nbsp; Inventory</button><button data-page="sales">₵ &nbsp; Sales</button><button data-page="returns">↩ &nbsp; Returns & Replacements</button>
-<div class="navtitle">Management</div><button data-page="categories">◈ &nbsp; Categories</button><button data-page="users">♙ &nbsp; Users & Permissions</button><button data-page="shops">⌂ &nbsp; Shops</button>
-<div class="navtitle">Reports</div><button data-page="reports">▥ &nbsp; Reports</button><button data-page="activity">◷ &nbsp; Activity Log</button>
+<div class="navtitle">Main</div><button class="active" data-page="dashboard" onclick="navigateTo('dashboard')">▦ &nbsp; Dashboard</button><button data-page="inventory" onclick="navigateTo('inventory')">▤ &nbsp; Inventory</button><button data-page="sales" onclick="navigateTo('sales')">₵ &nbsp; Sales</button><button data-page="returns" onclick="navigateTo('returns')">↩ &nbsp; Returns & Replacements</button>
+<div class="navtitle">Management</div><button data-page="categories" onclick="navigateTo('categories')">◈ &nbsp; Categories</button><button data-page="users" onclick="navigateTo('users')">♙ &nbsp; Users & Permissions</button><button data-page="shops" onclick="navigateTo('shops')">⌂ &nbsp; Shops</button>
+<div class="navtitle">Reports</div><button data-page="reports" onclick="navigateTo('reports')">▥ &nbsp; Reports</button><button data-page="activity" onclick="navigateTo('activity')">◷ &nbsp; Activity Log</button>
 </nav></aside>
 <main class="content" id="content"></main>
 </div></div>
@@ -129,6 +129,7 @@ function openPermissions(id){var u=state.users.find(function(x){return x.id===id
 async function savePermissions(id){if(!pamartProfile||pamartProfile.role!=='ADMIN'){alert('Admin permission required.');return}var target=state.users.find(function(x){return x.id===id});var selectedShop=document.getElementById('eshop')?.value||null;var payload={active:document.getElementById('eactive').checked,shop_id:target?.role==='Administrator'?null:selectedShop,can_add_stock:document.getElementById('eadd').checked,can_sell:document.getElementById('esell').checked,can_view_all_inventory:document.getElementById('eall').checked,can_view_reports:document.getElementById('ereports').checked,can_view_activity:document.getElementById('eactivity').checked,updated_at:new Date().toISOString()};var r=await pamartDb.from('profiles').update(payload).eq('id',id);if(r.error){alert(r.error.message);return}closeModal();await pamartLoad();state.page='users';render()}
 </script>
 <script>
+function navigateTo(page){state.page=page;render()}
 document.addEventListener('click',function(e){
   var b=e.target.closest('.nav button');
   if(!b)return;
